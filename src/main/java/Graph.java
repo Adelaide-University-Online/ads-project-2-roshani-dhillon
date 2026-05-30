@@ -21,20 +21,20 @@ public interface Graph {
      * @param dest The destination vertex
      * @return true if there is an edge from source to dest
      */
-    boolean isEdge(int source, int dest);
+    boolean isEdge(String source, String dest);
 
     /** Get the edge between two vertices.
      * @param source The source vertex
      * @param dest The destination vertex
      * @return The Edge between these two vertices or null if there is no edge
      */
-    Edge getEdge(int source, int dest);
+    Edge getEdge(String source, String dest);
 
     /** Return an iterator to the edges connected to a given vertex.
      * @param source The source vertex
      * @return An Interator<Edge> to the vertices connected to source
      */
-    Iterator<Edge> edgeIterator(int source);
+    Iterator<Edge> edgeIterator(String source);
 
     /** Code for the Graph interface inspired by:
      * Koffman, E. B. & Wolfgang, P. A. T. (2016). Data structures: Abstraction and design using Java (3rd ed.). Wiley.
