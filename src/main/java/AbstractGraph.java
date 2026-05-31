@@ -61,7 +61,6 @@ public abstract class AbstractGraph implements Graph {
             return returnValue;
         }
         catch (FileNotFoundException e) {
-            System.out.println("File \""+ fileName + "\" not found.");
             return null;
         }
     }

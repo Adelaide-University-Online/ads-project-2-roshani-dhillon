@@ -113,7 +113,11 @@ public class MapGraph extends AbstractGraph {
         String result = "SOURCE\t\t\t\tDESTINATIONS\n";
 
         for (String source : edges.keySet()) {
-            result += source + "\t\t\t\t" + edges.get(source);
+            result += source + "\t\t\t";
+            for (Edge edge : edges.get(source)) {
+                result += edge.getDest() + ", ";
+            }
+            result = result.substring(0, result.length() - 2) + "\n";
         }
         return result;
     }
