@@ -2,8 +2,8 @@ import java.util.*;
 import java.io.*;
 
 public abstract class AbstractGraph implements Graph {
-    private int numV;
-    private boolean directed;
+    protected int numV;
+    protected boolean directed;
 
     public AbstractGraph(int numV, String[] vertices, boolean directed) {
         this.numV = numV;

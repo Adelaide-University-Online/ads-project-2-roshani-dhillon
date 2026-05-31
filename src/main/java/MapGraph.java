@@ -82,6 +82,42 @@ public class MapGraph extends AbstractGraph {
         }
     }
 
+    /** Compares two objects for equality.
+     * @param obj   the reference object with which to compare.
+     * @return true if the map graphs are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof MapGraph) {
+            MapGraph other = (MapGraph)obj;
+            return numV == other.getNumV() && directed == other.isDirected() &&
+                    Objects.equals(edges, other.edges);
+        }
+        return false;
+    }
+
+    /** Returns the hash code for the map graph.
+     * The hash code depends on the number of vertices in the graph, the directionality, and the map of edges.
+     * @return the hash code
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(numV, directed, edges);
+    }
+
+    /** A string representation of the map graph, showing all source vertices next to all their destination vertices.
+     * @return A string of all source and destination vertices
+     */
+    @Override
+    public String toString() {
+        String result = "SOURCE\t\t\t\tDESTINATIONS\n";
+
+        for (String source : edges.keySet()) {
+            result += source + "\t\t\t\t" + edges.get(source);
+        }
+        return result;
+    }
+
     /** Code for the Graph interface inspired by:
      * Koffman, E. B. & Wolfgang, P. A. T. (2016). Data structures: Abstraction and design using Java (3rd ed.). Wiley.
      */
