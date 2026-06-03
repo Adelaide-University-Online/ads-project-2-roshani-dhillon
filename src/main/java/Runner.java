@@ -55,7 +55,23 @@ public class Runner {
                     new ArrayList<>(), new ArrayList<>(List.of(new ArrayList<>())));
 
             //Print results.
-            System.out.println(finalResult);
+            int year = 0;
+            int term = 1;
+            for (int i = 0; i < finalResult.size(); i++) {
+                if (i % 4 == 0) {
+                    System.out.println("-------------- YEAR " + ++year + " --------------");
+                    term = 1;
+                }
+                System.out.print("Term " + term + ": ");
+                String courses = "";
+                for (String course : finalResult.get(i)) {
+                    if (course != null) {
+                        courses += course + ", ";
+                    }
+                }
+                System.out.println(courses.substring(0, courses.length() - 2));
+                term ++;
+            }
         }
 
         //Quit program.
