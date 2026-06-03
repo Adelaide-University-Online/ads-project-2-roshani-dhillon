@@ -119,8 +119,10 @@ public class Runner {
         //While loop has ended meaning the queue is empty or all vertices have been checked.
         if (!queue.isEmpty()) {
             completed.addAll(result.getLast());
-            for (int i = 0; i < maxPerTerm - result.getLast().size(); i++) {
+            int nullsToAdd = maxPerTerm - result.getLast().size();
+            for (int i = 0; i < nullsToAdd; i++) {
                 result.getLast().add(null);
+
             }
             return orderCourses(graph, queue, maxPerTerm, completed, result);
         }
