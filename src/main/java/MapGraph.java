@@ -41,12 +41,27 @@ public class MapGraph extends AbstractGraph {
 
         if (!edges.containsKey(source)) {   //Add new key-value pair if source is not yet a vertex.
             edges.put(source, new ArrayList<>());
+
+            if (!Arrays.asList(vertices).contains(source)) {
+                vertices = Arrays.copyOf(vertices, vertices.length + 1);
+                vertices[vertices.length - 1] = source;
+            }
+
+            if (!Arrays.asList(vertices).contains(dest)) {
+                vertices = Arrays.copyOf(vertices, vertices.length + 1);
+                vertices[vertices.length - 1] = dest;
+            }
+
+            numV = vertices.length;
         }
         edges.get(source).add(edge);
 
         if (!isDirected()) {   //Create edge in reverse direction if the map is not directed.
             Edge reverseEdge = new Edge(dest, source);
-            edges.get(source).add(reverseEdge);
+            if (!edges.containsKey(dest)) {
+                edges.put(dest, new ArrayList<Edge>());
+            }
+            edges.get(dest).add(reverseEdge);
         }
     }
 
@@ -110,7 +125,7 @@ public class MapGraph extends AbstractGraph {
      */
     @Override
     public String toString() {
-        String result = "SOURCE\t\t\t\tDESTINATIONS\n";
+        String result = "DESTINATION\t\t\t\tSOURCES\n";
 
         for (String source : edges.keySet()) {
             result += source + "\t\t\t";

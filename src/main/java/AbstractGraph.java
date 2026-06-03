@@ -4,10 +4,12 @@ import java.io.*;
 public abstract class AbstractGraph implements Graph {
     protected int numV;
     protected boolean directed;
+    protected String[] vertices;
 
     public AbstractGraph(int numV, String[] vertices, boolean directed) {
         this.numV = numV;
         this.directed = directed;
+        this.vertices = vertices;
     }
 
     /** Returns the number of vertices in the graph.
@@ -24,6 +26,13 @@ public abstract class AbstractGraph implements Graph {
         return directed;
     }
 
+    /** Returns a list of all vertices in the graph.
+     * @return list of vertices
+     */
+    public String[] getVertices() {
+        return vertices;
+    }
+
     /** Loads the edges of a graph from the data in an input file.
      * The file should be formatted with the vertex followed by its adjacent vertices (eg V5, V4, V2 - indicates that
      * V4 and V2 are both adjacent to V5).
@@ -35,9 +44,9 @@ public abstract class AbstractGraph implements Graph {
         while (scan.hasNextLine()) {
             String[] components = scan.nextLine().split(", ");
             for (int i = 1; i < components.length; i++) {
-                insert(new Edge(components[0], components[i]));
+                insert(new Edge(components[i], components[0]));
                 if (!directed) {
-                    insert(new Edge(components[i], components[0]));
+                    insert(new Edge(components[0], components[i]));
                 }
             }
         }
