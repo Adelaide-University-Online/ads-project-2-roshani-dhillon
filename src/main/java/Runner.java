@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.io.File;
+import java.util.*;
 
 /**
 * File: filename.java
@@ -30,18 +31,25 @@ public class Runner {
                     new String[] {"Re-enter file name", "Quit"}, "Re-enter file name");
             if (choice == 0) {
                 fileName = JOptionPane.showInputDialog("Enter the file name");
-                prerequisiteGraph = (MapGraph)AbstractGraph.createGraph(fileName, true);
+                filePath = "src/main/text/" + fileName;
+                prerequisiteGraph = (MapGraph)AbstractGraph.createGraph(filePath, true);
             } else {
                 break;
             }
         }
 
-        if (choice != 1) {
+        if (choice != 1) {  //If user did not choose to quit.
             int numCourses = getNumberOfCourses();
 
-            System.out.println(prerequisiteGraph);
+            //Do a depth-first search.
+            DepthFirstSearch dfs = new DepthFirstSearch(prerequisiteGraph);
+            String[] finishOrder = dfs.getFinishOrder();
 
-            //Do analysis.
+            //Reverse DFS into a queue (topological sort).
+            Queue<String> queue = new ArrayDeque<>();
+            for (int i = finishOrder.length - 1; i > -1; i--) {
+                queue.add(finishOrder[i]);
+            }
         }
 
         //Quit program.
