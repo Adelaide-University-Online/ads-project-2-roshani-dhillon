@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.io.File;
 import java.util.*;
 
 /**
@@ -50,6 +49,13 @@ public class Runner {
             for (int i = finishOrder.length - 1; i > -1; i--) {
                 queue.add(finishOrder[i]);
             }
+
+            //Get order in which to study courses.
+            List<List<String>> finalResult = orderCourses(prerequisiteGraph, queue, numCourses,
+                    new ArrayList<>(), new ArrayList<>(List.of(new ArrayList<>())));
+
+            //Print results.
+            System.out.println(finalResult);
         }
 
         //Quit program.
@@ -70,4 +76,55 @@ public class Runner {
         }
     }
 
+    public static List<List<String>> orderCourses(MapGraph graph, Queue<String> queue, int maxPerTerm,
+                                                  List<String> completed, List<List<String>> result) {
+        int checked = 0;  //Track how many courses are checked each rotation.
+        int prevChecked = -1;  //Store how many courses were checked last rotation.
+
+        while (checked != prevChecked && !queue.isEmpty()) {
+            prevChecked = checked;
+            checked = 0;
+
+            for (int i = 0; i < queue.size(); i++) {
+                String vertex = queue.poll();
+                List<String> prerequisites = new ArrayList<>();
+
+                //Get all prerequisites for the vertex.
+                for (String source : graph.getVertices()) {
+                    Iterator<Edge> itr = graph.edgeIterator(source);
+                    while (itr.hasNext()) {
+                        if(Objects.equals(itr.next().getDest(), vertex)) {
+                            prerequisites.add(source);
+                        }
+                    }
+                }
+
+                if (prerequisites.isEmpty() || completed.containsAll(prerequisites)) {
+                    if (result.getLast().size() < maxPerTerm) {
+                        result.getLast().add(vertex);
+                    } else {
+                        result.add(new ArrayList<>(List.of(vertex)));
+                    }
+
+                    if (result.getLast().size() == maxPerTerm) {
+                        completed.addAll(result.getLast());
+                    }
+                } else {
+                    queue.add(vertex);
+                }
+                checked++;
+            }
+        }
+
+        //While loop has ended meaning the queue is empty or all vertices have been checked.
+        if (!queue.isEmpty()) {
+            completed.addAll(result.getLast());
+            for (int i = 0; i < maxPerTerm - result.getLast().size(); i++) {
+                result.getLast().add(null);
+            }
+            return orderCourses(graph, queue, maxPerTerm, completed, result);
+        }
+        return result;
+    }
 }
+
