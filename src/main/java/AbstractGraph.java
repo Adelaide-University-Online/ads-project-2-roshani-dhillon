@@ -4,9 +4,9 @@ import java.io.*;
 public abstract class AbstractGraph implements Graph {
     protected int numV;
     protected boolean directed;
-    protected String[] vertices;
+    protected ArrayList<String> vertices;
 
-    public AbstractGraph(int numV, String[] vertices, boolean directed) {
+    public AbstractGraph(int numV, ArrayList<String> vertices, boolean directed) {
         this.numV = numV;
         this.directed = directed;
         this.vertices = vertices;
@@ -29,7 +29,7 @@ public abstract class AbstractGraph implements Graph {
     /** Returns a list of all vertices in the graph.
      * @return list of vertices
      */
-    public String[] getVertices() {
+    public ArrayList<String> getVertices() {
         return vertices;
     }
 
@@ -62,10 +62,10 @@ public abstract class AbstractGraph implements Graph {
         try {
             //Get the first line of the file (the complete list of vertices).
             Scanner scan = new Scanner(new File(fileName));
-            String[] vertices = scan.nextLine().split(", ");
+            ArrayList<String> vertices = new ArrayList<>(Arrays.asList(scan.nextLine().split(", ")));
 
             //Create a new MapGraph object with the information in the file.
-            AbstractGraph returnValue = new MapGraph(vertices.length, vertices, isDirected);
+            AbstractGraph returnValue = new MapGraph(vertices.size(), vertices, isDirected);
             returnValue.loadEdgesFromFile(scan);
             return returnValue;
         }

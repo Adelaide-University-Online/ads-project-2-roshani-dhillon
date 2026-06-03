@@ -9,7 +9,7 @@ public class MapGraph extends AbstractGraph {
      * @param vertices A list of all the vertices in the map
      * @param directed The directionality flag
      */
-    public MapGraph(int numV, String[] vertices, boolean directed) {
+    public MapGraph(int numV, ArrayList<String> vertices, boolean directed) {
         super(numV, vertices, directed);
         edges = new HashMap<>();
         for (String vertex : vertices) {
@@ -42,17 +42,15 @@ public class MapGraph extends AbstractGraph {
         if (!edges.containsKey(source)) {   //Add new key-value pair if source is not yet a vertex.
             edges.put(source, new ArrayList<>());
 
-            if (!Arrays.asList(vertices).contains(source)) {
-                vertices = Arrays.copyOf(vertices, vertices.length + 1);
-                vertices[vertices.length - 1] = source;
+            if (!vertices.contains(source)) {
+                vertices.add(source);
             }
 
-            if (!Arrays.asList(vertices).contains(dest)) {
-                vertices = Arrays.copyOf(vertices, vertices.length + 1);
-                vertices[vertices.length - 1] = dest;
+            if (!vertices.contains(dest)) {
+                vertices.add(source);
             }
 
-            numV = vertices.length;
+            numV = vertices.size();
         }
         edges.get(source).add(edge);
 
