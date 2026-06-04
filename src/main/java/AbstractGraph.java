@@ -1,34 +1,32 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * File: Graph.java
+ * Description: A Java module (abstract class) representing a general Graph data structure.
+ * Author: Roshani Dhillon
+ * Student ID: a1885921
+ * Email ID: a1885921
+ * AI Tool Used: N
+ * This is my own work as defined by the University's Academic Integrity Policy.
+ **/
 public abstract class AbstractGraph implements Graph {
-    protected int numV;
     protected boolean directed;
     protected ArrayList<String> vertices;
 
-    public AbstractGraph(int numV, ArrayList<String> vertices, boolean directed) {
-        this.numV = numV;
+    public AbstractGraph(ArrayList<String> vertices, boolean directed) {
         this.directed = directed;
         this.vertices = vertices;
     }
 
-    /** Returns the number of vertices in the graph.
-     * @return number of vertices
-     */
     public int getNumV() {
-        return numV;
+        return vertices.size();
     }
 
-    /** Determine if the graph is directed.
-     * @return true if the graph is directed
-     */
     public boolean isDirected() {
         return directed;
     }
 
-    /** Returns a list of all vertices in the graph.
-     * @return list of vertices
-     */
     public ArrayList<String> getVertices() {
         return vertices;
     }
@@ -58,14 +56,14 @@ public abstract class AbstractGraph implements Graph {
      * @param fileName The name of the file to use for the graph
      * @param isDirected true if this is a directed graph, false otherwise
      */
-    public static Graph createGraph(String fileName, boolean isDirected) {
+    protected static Graph createGraph(String fileName, boolean isDirected) {
         try {
             //Get the first line of the file (the complete list of vertices).
             Scanner scan = new Scanner(new File(fileName));
             ArrayList<String> vertices = new ArrayList<>(Arrays.asList(scan.nextLine().split(", ")));
 
             //Create a new MapGraph object with the information in the file.
-            AbstractGraph returnValue = new MapGraph(vertices.size(), vertices, isDirected);
+            AbstractGraph returnValue = new MapGraph(vertices, isDirected);
             returnValue.loadEdgesFromFile(scan);
             return returnValue;
         }
@@ -74,7 +72,7 @@ public abstract class AbstractGraph implements Graph {
         }
     }
 
-    /** Code for the Edge class inspired by:
+    /** Code for the AbstractGraph class inspired by:
      * Koffman, E. B. & Wolfgang, P. A. T. (2016). Data structures: Abstraction and design using Java (3rd ed.). Wiley.
      */
 }
