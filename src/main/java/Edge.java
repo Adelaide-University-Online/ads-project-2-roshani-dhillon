@@ -1,5 +1,14 @@
 import java.util.*;
 
+/**
+ * File: Edge.java
+ * Description: A Java module representing an edge in a graph structure (relationship between two vertices).
+ * Author: Roshani Dhillon
+ * Student ID: a1885921
+ * Email ID: a1885921
+ * AI Tool Used: N
+ * This is my own work as defined by the University's Academic Integrity Policy.
+ **/
 public class Edge {
     private String dest;
     private String source;
@@ -46,6 +55,11 @@ public class Edge {
         return Objects.hash(source, dest);
     }
 
+    /** A string representation of the edge, in the format:
+     * Source: X
+     * Destination: Y
+     * @return a string representation of the edge
+     */
     @Override
     public String toString() {
         return "Source: " + source + "\nDestination: " + dest;
