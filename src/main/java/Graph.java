@@ -1,5 +1,14 @@
 import java.util.*;
 
+/**
+ * File: Graph.java
+ * Description: A Java interface defining the blueprint of a Graph data structure.
+ * Author: Roshani Dhillon
+ * Student ID: a1885921
+ * Email ID: a1885921
+ * AI Tool Used: N
+ * This is my own work as defined by the University's Academic Integrity Policy.
+ **/
 public interface Graph {
     /** Return the number of vertices.
      * @return The number of vertices
@@ -10,6 +19,11 @@ public interface Graph {
      * @return true if this is a directed graph
      */
     boolean isDirected();
+
+    /** Returns a list of all vertices in the graph.
+     * @return list of vertices
+     */
+    ArrayList<String> getVertices();
 
     /** Insert a new edge into the graph.
      * @param edge The new edge
