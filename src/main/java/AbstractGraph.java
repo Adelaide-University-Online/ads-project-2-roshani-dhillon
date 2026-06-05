@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * File: Graph.java
+ * File: AbstractGraph.java
  * Description: A Java module (abstract class) representing a general Graph data structure.
  * Author: Roshani Dhillon
  * Student ID: a1885921
@@ -34,7 +34,7 @@ public abstract class AbstractGraph implements Graph {
     /** Loads the edges of a graph from the data in an input file.
      * The file should be formatted with the vertex followed by its adjacent vertices (eg V5, V4, V2 - indicates that
      * V4 and V2 are both adjacent to V5).
-     * If the graph is directed, an additional edge will be created to ensure two directional edges (eg V5 will be
+     * If the graph is undirected, an additional edge will be created to ensure two directional edges (eg V5 will be
      * adjacent to V4 and V2).
      * @param scan The Scanner connected to the data file
      */
@@ -70,6 +70,37 @@ public abstract class AbstractGraph implements Graph {
         catch (FileNotFoundException e) {
             return null;
         }
+    }
+
+    /** Compares two objects for equality.
+     * @param obj   the reference object with which to compare.
+     * @return true if the graphs are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AbstractGraph) {
+            AbstractGraph other = (AbstractGraph)obj;
+            return directed == other.isDirected() && Objects.equals(vertices, other.getVertices());
+        }
+        return false;
+    }
+
+    /** Returns the hash code for the graph.
+     * The hash code depends on the vertices in the graph and the directionality.
+     * @return the hash code
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(directed, vertices);
+    }
+
+    @Override
+    public String toString() {
+        String result = "Directed: " + directed + "\nVertices: ";
+        for (String vertex : vertices) {
+            result += vertex + ", ";
+        }
+        return result.substring(0, result.length() - 2);
     }
 
     /** Code for the AbstractGraph class inspired by:
