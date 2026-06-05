@@ -2,49 +2,53 @@ import javax.swing.*;
 import java.util.*;
 
 /**
-* File: filename.java
-* Description: A brief description of this Java module.
-* Author: Steve Jobs
-* Student ID: 12345678
-* Email ID: jobst007
-* AI Tool Used: Y/N (This includes all AI Tools e.g. ChatGPT, Microsoft or Github Copiliot etc... Please leave blank if you do not wish to share this information)
-* This is my own work as defined by
-*    the University's Academic Integrity Policy.
-**/
+ * File: Runner.java
+ * Description: A Java module running the code for the OptiTime tool which identifies the optimal order in which to
+ * study courses in a particular degree.
+ * Author: Roshani Dhillon
+ * Student ID: a1885921
+ * Email ID: a1885921
+ * AI Tool Used: N
+ * This is my own work as defined by the University's Academic Integrity Policy.
+ **/
 public class Runner {
-    
-    public static void main(String[] args) {
-        System.out.println("Welcome to ADS Assignment Starter!");
-        System.out.println("This is a basic Java project template.");
-        System.out.println("You can modify this file to implement your assignment requirements.");
 
+    public static void main(String[] args) {
+        //Get file name and location (in text folder).
         String fileName = JOptionPane.showInputDialog("Enter the file name");
         String filePath = "src/main/text/" + fileName;
 
+        //Create map graph using file path.
         MapGraph prerequisiteGraph = (MapGraph)AbstractGraph.createGraph(filePath, true);
+
+        //Initialise choice variable.
         int choice = 0;
 
+        //If initial file does not exist, keep asking user for the file name until it is valid
+        //or the user decides to quit.
         while (prerequisiteGraph == null) {
             choice = JOptionPane.showOptionDialog(null, "File not found", "File not found",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                     new String[] {"Re-enter file name", "Quit"}, "Re-enter file name");
-            if (choice == 0) {
+            if (choice == 0) {  //Choice is to reenter file name.
                 fileName = JOptionPane.showInputDialog("Enter the file name");
                 filePath = "src/main/text/" + fileName;
                 prerequisiteGraph = (MapGraph)AbstractGraph.createGraph(filePath, true);
-            } else {
+            } else {  //Choice is to quit.
                 break;
             }
         }
 
         if (choice != 1) {  //If user did not choose to quit.
+            //Get the number of courses the user can study concurrently each term.
             int numCourses = getNumberOfCourses();
 
-            //Do a depth-first search.
+            //Do a depth-first search of the graph.
             DepthFirstSearch dfs = new DepthFirstSearch(prerequisiteGraph);
             String[] finishOrder = dfs.getFinishOrder();
 
             //Reverse DFS into a queue (topological sort).
+            //This will put the courses in the estimated correct order of study.
             Queue<String> queue = new ArrayDeque<>();
             for (int i = finishOrder.length - 1; i > -1; i--) {
                 queue.add(finishOrder[i]);
@@ -56,21 +60,15 @@ public class Runner {
 
             //Print results.
             int year = 0;
-            int term = 1;
-            for (int i = 0; i < finalResult.size(); i++) {
-                if (i % 4 == 0) {
+            int term = 5;
+            for (List<String> termCourses : finalResult) {
+                if (term == 5) {
                     System.out.println("-------------- YEAR " + ++year + " --------------");
                     term = 1;
                 }
-                System.out.print("Term " + term + ": ");
-                String courses = "";
-                for (String course : finalResult.get(i)) {
-                    if (course != null) {
-                        courses += course + ", ";
-                    }
-                }
-                System.out.println(courses.substring(0, courses.length() - 2));
-                term ++;
+                termCourses.removeIf(item -> Objects.equals(item, null));
+                System.out.print("Term " + term++ + ": " +
+                        termCourses.toString().substring(1, termCourses.toString().length()-1) + "\n");
             }
         }
 
@@ -103,17 +101,7 @@ public class Runner {
 
             for (int i = 0; i < queue.size(); i++) {
                 String vertex = queue.poll();
-                List<String> prerequisites = new ArrayList<>();
-
-                //Get all prerequisites for the vertex.
-                for (String source : graph.getVertices()) {
-                    Iterator<Edge> itr = graph.edgeIterator(source);
-                    while (itr.hasNext()) {
-                        if(Objects.equals(itr.next().getDest(), vertex)) {
-                            prerequisites.add(source);
-                        }
-                    }
-                }
+                List<String> prerequisites = graph.getPrerequisites(vertex);
 
                 if (prerequisites.isEmpty() || completed.containsAll(prerequisites)) {
                     if (result.getLast().size() < maxPerTerm) {
