@@ -84,8 +84,8 @@ public class DepthFirstSearch {
     public boolean equals(Object obj) {
         if (obj instanceof DepthFirstSearch) {
             DepthFirstSearch other = (DepthFirstSearch)obj;
-            return Objects.equals(graph, other.graph) && Objects.equals(discoveryOrder, other.discoveryOrder) &&
-                    Objects.equals(finishOrder, other.finishOrder);
+            return Objects.equals(graph, other.graph) && Arrays.equals(discoveryOrder, other.discoveryOrder) &&
+                    Arrays.equals(finishOrder, other.finishOrder);
         }
         return false;
     }
@@ -96,7 +96,7 @@ public class DepthFirstSearch {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(graph, discoveryOrder, finishOrder);
+        return Objects.hash(graph, Arrays.hashCode(discoveryOrder), Arrays.hashCode(finishOrder));
     }
 
     /** A string representation of the depth-first search object.
