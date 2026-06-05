@@ -104,12 +104,12 @@ public class DepthFirstSearch {
      */
     @Override
     public String toString() {
-        return graph.toString() + "---------Depth-First Search---------\n" + "Finish Order: " +
+        return graph.toString() + "---------Depth-First Search---------\nFinish Order: " +
                 finishOrder.toString().substring(1, finishOrder.toString().length()-1) + "\nDiscovery Order: " +
                 discoveryOrder.toString().substring(1, discoveryOrder.toString().length()-1);
     }
 
-    /** Code for the DepthFirstSearch interface inspired by:
+    /** Code for the DepthFirstSearch class inspired by:
      * Koffman, E. B. & Wolfgang, P. A. T. (2016). Data structures: Abstraction and design using Java (3rd ed.). Wiley.
      */
 }
