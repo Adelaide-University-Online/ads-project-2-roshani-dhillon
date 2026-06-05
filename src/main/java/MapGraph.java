@@ -41,15 +41,16 @@ public class MapGraph extends AbstractGraph {
 
         if (!edges.containsKey(source)) {   //Add new key-value pair if source is not yet a vertex.
             edges.put(source, new ArrayList<>());
-
-            if (!vertices.contains(source)) {  //Add source to vertices list if not already in it.
-                vertices.add(source);
-            }
-
-            if (!vertices.contains(dest)) {  //Add dest to vertices list if not already in it.
-                vertices.add(source);
-            }
         }
+
+        if (!vertices.contains(source)) {  //Add source to vertices list if not already in it.
+            vertices.add(source);
+        }
+
+        if (!vertices.contains(dest)) {  //Add dest to vertices list if not already in it.
+            vertices.add(dest);
+        }
+
         edges.get(source).add(edge);
 
         if (!isDirected()) {   //Create edge in reverse direction if the map is not directed.
