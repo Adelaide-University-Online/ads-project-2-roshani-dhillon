@@ -96,11 +96,7 @@ public abstract class AbstractGraph implements Graph {
 
     @Override
     public String toString() {
-        String result = "Directed: " + directed + "\nVertices: ";
-        for (String vertex : vertices) {
-            result += vertex + ", ";
-        }
-        return result.substring(0, result.length() - 2);
+        return "Directed: " + directed + "\nVertices: " + vertices.toString().substring(1, vertices.toString().length()-1);
     }
 
     /** Code for the AbstractGraph class inspired by:
