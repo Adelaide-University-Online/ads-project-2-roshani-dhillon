@@ -1,28 +1,31 @@
 import java.util.*;
 
+
+/**
+ * File: MapGraph.java
+ * Description: A Java module representing a map graph data structure.
+ * Author: Roshani Dhillon
+ * Student ID: a1885921
+ * Email ID: a1885921
+ * AI Tool Used: N
+ * This is my own work as defined by the University's Academic Integrity Policy.
+ **/
 public class MapGraph extends AbstractGraph {
     private Map<String, List<Edge>> edges;
 
     /** Contructs a map graph with the specified vertices and directionality.
      *
-     * @param numV The number of vertices
      * @param vertices A list of all the vertices in the map
      * @param directed The directionality flag
      */
-    public MapGraph(int numV, ArrayList<String> vertices, boolean directed) {
-        super(numV, vertices, directed);
+    public MapGraph(ArrayList<String> vertices, boolean directed) {
+        super(vertices, directed);
         edges = new HashMap<>();
         for (String vertex : vertices) {
             edges.put(vertex, new ArrayList<Edge>());
         }
     }
 
-    /** Determines whether an edge exists.
-     *
-     * @param source The source vertex
-     * @param dest The destination vertex
-     * @return true if there is an edge from source to dest
-     */
     public boolean isEdge(String source, String dest) {
         try {
             return edges.get(source).contains(new Edge (source, dest));
@@ -32,9 +35,6 @@ public class MapGraph extends AbstractGraph {
         }
     }
 
-    /** Inserts an Edge into the map graph.
-     * @param edge The new edge to be inserted
-     */
     public void insert(Edge edge) {
         String source = edge.getSource();
         String dest = edge.getDest();
@@ -42,15 +42,13 @@ public class MapGraph extends AbstractGraph {
         if (!edges.containsKey(source)) {   //Add new key-value pair if source is not yet a vertex.
             edges.put(source, new ArrayList<>());
 
-            if (!vertices.contains(source)) {
+            if (!vertices.contains(source)) {  //Add source to vertices list if not already in it.
                 vertices.add(source);
             }
 
-            if (!vertices.contains(dest)) {
+            if (!vertices.contains(dest)) {  //Add dest to vertices list if not already in it.
                 vertices.add(source);
             }
-
-            numV = vertices.size();
         }
         edges.get(source).add(edge);
 
@@ -63,24 +61,15 @@ public class MapGraph extends AbstractGraph {
         }
     }
 
-    /** Creates an iterator object for the list of edges of a source vertex
-     * @param source The source vertex
-     * @return Iterator object, or null if the source vertex is not in the map
-     */
     public Iterator<Edge> edgeIterator(String source) {
         try {
             return edges.get(source).iterator();
         }
         catch (NullPointerException e) {
-            return null;
+            return Collections.emptyIterator();
         }
     }
 
-    /** Returns the Edge object between a given source vertex and destination vertex, if it exists in the map.
-     * @param source The source vertex
-     * @param dest The destination vertex
-     * @return The existing Edge object, or null if the edge does not exist
-     */
     public Edge getEdge(String source, String dest) {
         try {
             List<Edge> edgeList = edges.get(source);
@@ -95,27 +84,39 @@ public class MapGraph extends AbstractGraph {
         }
     }
 
-    /** Compares two objects for equality.
-     * @param obj   the reference object with which to compare.
-     * @return true if the map graphs are equal
+    /** Get all prerequisites for a particular course.
+     * @param course the course
+     * @return a list of all the prerequisites
      */
+    public List<String> getPrerequisites(String course) {
+        List<String> prerequisites = new ArrayList<>();
+        for (String source : vertices) {
+            Iterator<Edge> itr = edgeIterator(source);
+            while (itr.hasNext()) {
+                if(Objects.equals(itr.next().getDest(), course)) {
+                    prerequisites.add(source);
+                }
+            }
+        }
+        return prerequisites;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MapGraph) {
             MapGraph other = (MapGraph)obj;
-            return numV == other.getNumV() && directed == other.isDirected() &&
-                    Objects.equals(edges, other.edges);
+            return super.equals(obj) && Objects.equals(edges, other.edges);
         }
         return false;
     }
 
     /** Returns the hash code for the map graph.
-     * The hash code depends on the number of vertices in the graph, the directionality, and the map of edges.
+     * The hash code depends on the vertices in the graph, the directionality, and the map of edges.
      * @return the hash code
      */
     @Override
     public int hashCode() {
-        return Objects.hash(numV, directed, edges);
+        return super.hashCode() + edges.hashCode();
     }
 
     /** A string representation of the map graph, showing all source vertices next to all their destination vertices.
@@ -123,19 +124,22 @@ public class MapGraph extends AbstractGraph {
      */
     @Override
     public String toString() {
-        String result = "DESTINATION\t\t\t\tSOURCES\n";
+        String result = "COURSE  <-  PREREQUISITES\n------------------------\n";
 
-        for (String source : edges.keySet()) {
-            result += source + "\t\t\t";
-            for (Edge edge : edges.get(source)) {
-                result += edge.getDest() + ", ";
+        for (String course : vertices) {
+            result += course;
+            List<String> prerequisites = getPrerequisites(course);
+            if (!prerequisites.isEmpty()) {
+                result += "  <-  " + prerequisites.toString().substring(1,prerequisites.toString().length()-1) + "\n";
+            } else {
+                result += "\n";
             }
-            result = result.substring(0, result.length() - 2) + "\n";
         }
+
         return result;
     }
 
-    /** Code for the Graph interface inspired by:
+    /** Code for the MapGraph class inspired by:
      * Koffman, E. B. & Wolfgang, P. A. T. (2016). Data structures: Abstraction and design using Java (3rd ed.). Wiley.
      */
 }
